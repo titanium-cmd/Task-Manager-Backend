@@ -1,9 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const { addUser, getAllUsers, updateUserById, deleteUserById } = require('../controllers/usersController')
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+router.post('/', addUser);
+
+router.get('/', getAllUsers);
+
+router.patch('/:id', updateUserById);
+
+router.delete('/:id', deleteUserById);
 
 module.exports = router;
