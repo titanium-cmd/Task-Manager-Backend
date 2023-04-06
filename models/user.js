@@ -1,18 +1,21 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-  ride_id: {
-    type: Number,
-    required: true,
-  },
-  drivers: {
-    type: Array,
-    required: true
-  },
-  customer_socket_id: {
+  email_address: {
     type: String,
-    required: true
-  }
+    required: [true, 'Email is required'],
+    unique: [true, 'Email already exists']
+  },
+  username: {
+    type: String,
+    required: [true, 'Username is required'],
+    unique: [true, 'Username provided has been taken. Please provide another']
+  },
+  password: {
+    type: String,
+    min: [8, 'Password must be at least 8 characters'],
+    required: [true, 'Password is required']
+  },
 }, { timestamps: true });
 
 const user = mongoose.model('user', userSchema);
