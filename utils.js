@@ -1,6 +1,6 @@
+require('dotenv').config();
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
-require('dotenv').config();
 
 const errorHandler = (err) => {
   const { message, code, errors } = err;
@@ -13,6 +13,9 @@ const errorHandler = (err) => {
   }
   if (code === 11000) {
     errorMessage = `${Object.values(err.keyValue)[0]} already exists`
+  }
+  if (errorMessage === '') { 
+    errorMessage = err.message;
   }
 
   return errorMessage;

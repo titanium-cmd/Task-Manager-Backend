@@ -1,9 +1,9 @@
 const User = require('../models/user');
-const { errorHandler, encryptPassword } = require('../utils');
+const { errorHandler, encryptPassword, comparePasswords, createAccessToken } = require('../utils');
 
 const addUser = async (req, res) => {
   try {
-    const password = encryptPassword({ password: req.body.password });
+    const password = await encryptPassword({ password: req.body.password });
     await User.create({ ...req.body, password });
     return res.status(201).json({ success: true, message: "User created successfully" })
   } catch (error) {
