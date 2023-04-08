@@ -4,7 +4,7 @@ const { addTask, getAllTasks, updateTaskById, deleteTaskById } = require('../con
 
 router.post('/', addTask);
 
-router.get('/', getAllTasks);
+router.get('/:status', getAllTasks);
 
 router.patch('/:id', updateTaskById);
 
