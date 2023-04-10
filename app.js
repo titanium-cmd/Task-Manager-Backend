@@ -21,12 +21,12 @@ app.use('/', indexRouter);
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/tasks', tasksRouter);
 
-mongoose.connect(process.env.MONGODB_ATLAS).then(() => {
+app.listen(process.env.PORT, () => {
+  console.log(`SERVER RUNNING ON PORT ${process.env.PORT}`);
   console.log(`CONNECTING TO MONGO DB...`);
-  console.log('MONGODB CONNECTED');
-  app.listen(process.env.PORT, () => {
-    console.log(`SERVER RUNNING ON PORT ${process.env.PORT}`);
-  })
-}).catch((error) => {
-  console.log('MONGODB CONNECTION ERROR:: ', error.message);
-});
+  mongoose.connect(process.env.MONGODB_ATLAS).then(() => {
+    console.log('MONGODB CONNECTED');
+  }).catch((error) => {
+    console.log('MONGODB CONNECTION ERROR:: ', error.message);
+  });
+})
