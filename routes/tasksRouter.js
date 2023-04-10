@@ -6,7 +6,7 @@ router.post('/', addTask);
 
 router.get('/:status', getAllTasks);
 
-router.patch('/:id', updateTaskById);
+router.put('/:id', updateTaskById);
 
 router.delete('/:id', deleteTaskById);
 

@@ -13,8 +13,12 @@ const addTask = async (req, res) => {
 
 const getAllTasks = async (req, res) => {
   try {
-    const status = req.params.status === 'all' ? undefined : req.params.status;
-    const tasks = await Task.find({ status })
+    let tasks;
+    if (req.params.status === 'all') {
+      tasks = await Task.find()
+    } else {
+      tasks = await Task.find({ status: req.params.status })
+    }
     return res.status(200).json({ success: true, tasks });
   } catch (error) {
     const message = errorHandler(error);
