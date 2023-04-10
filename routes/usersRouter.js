@@ -9,7 +9,7 @@ router.post('/login', userLogin);
 
 router.get('/', usersAuthMiddleware, getAllUsers);
 
-router.patch('/:id', usersAuthMiddleware, updateUserById);
+router.put('/:id', usersAuthMiddleware, updateUserById);
 
 router.delete('/:id', usersAuthMiddleware, deleteUserById);
 

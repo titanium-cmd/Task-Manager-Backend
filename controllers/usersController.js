@@ -45,7 +45,12 @@ const getAllUsers = async (req, res) => {
 
 const updateUserById = async (req, res) => {
   try {
-
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const token = createAccessToken({
+      user_id: user._id,
+      email_address: user.email_address,
+    });
+    return res.status(200).json({ success: true, message: "User updated successfully", user, token });
   } catch (error) {
     const message = errorHandler(error);
     return res.status(400).json({ success: false, message })
