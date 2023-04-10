@@ -25,15 +25,8 @@ const userLogin = async (req, res) => {
       user_id: user._id,
       email_address: user.email_address,
     });
-    console.log(token);
-    res.cookie('adriot_token', token, {
-      maxAge: 86400000, // cookie expires in 1 day
-      httpOnly: true,
-      signed: true,
-      secure: true
-    });
     user = await User.findOne({ email_address }).select('-password');
-    res.status(200).json({ success: true, message: 'User login successful', user });
+    res.status(200).json({ success: true, message: 'User login successful', user, token });
   } catch (error) {
     const message = errorHandler(error);
     return res.status(400).json({ success: false, message })
