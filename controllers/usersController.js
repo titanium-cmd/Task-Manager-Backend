@@ -25,8 +25,15 @@ const userLogin = async (req, res) => {
       user_id: user._id,
       email_address: user.email_address,
     });
+    console.log(token);
+    res.cookie('adriot_token', token, {
+      maxAge: 86400000, // cookie expires in 1 day
+      httpOnly: true,
+      signed: true,
+      secure: true
+    });
     user = await User.findOne({ email_address }).select('-password');
-    return res.status(200).json({ success: true, message: 'User login successful', token, user });
+    res.status(200).json({ success: true, message: 'User login successful', user });
   } catch (error) {
     const message = errorHandler(error);
     return res.status(400).json({ success: false, message })
@@ -57,6 +64,23 @@ const updateUserById = async (req, res) => {
   }
 }
 
+const changeUserPassword = async (req, res) => {
+  try {
+    const { email_address, password } = req.body;
+    const user = await User.findOne({ email_address });
+    if (!user) {
+      return res.status(400).json({ success: false, message: "Invalid email address" });
+    } else {
+      const new_password = await encryptPassword({ password });
+      await User.findByIdAndUpdate(user._id, { password: new_password });
+      return res.status(200).json({ success: true, message: "User password successfully" });
+    }
+  } catch (error) {
+    const message = errorHandler(error);
+    return res.status(400).json({ success: false, message })
+  }
+}
+
 const deleteUserById = async (req, res) => {
   try {
     await User.findByIdAndDelete(req.params.id)
@@ -72,5 +96,6 @@ module.exports = {
   updateUserById,
   deleteUserById,
   getAllUsers,
-  userLogin
+  userLogin,
+  changeUserPassword
 }
