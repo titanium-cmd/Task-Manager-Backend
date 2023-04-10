@@ -3,7 +3,8 @@ const { errorHandler } = require('../utils');
 
 const addTask = async (req, res) => {
   try {
-    await Task.create(req.body);
+    const { user_id } = req.user;
+    await Task.create({ ...req.body, assigned_to: user_id });
     return res.status(201).json({ success: true, message: 'Task created successfully' })
   } catch (error) {
     const message = errorHandler(error);
@@ -13,11 +14,12 @@ const addTask = async (req, res) => {
 
 const getAllTasks = async (req, res) => {
   try {
+    const { user_id } = req.user;
     let tasks;
     if (req.params.status === 'all') {
-      tasks = await Task.find()
+      tasks = await Task.find({assigned_to: user_id});
     } else {
-      tasks = await Task.find({ status: req.params.status })
+      tasks = await Task.find({ status: req.params.status, assigned_to: user_id })
     }
     return res.status(200).json({ success: true, tasks });
   } catch (error) {
